@@ -1,0 +1,122 @@
+<cars>
+    <car>
+        
+        <type>SUV</type>
+        <model>RAV4</model>
+        <price currency="USD">25000.00</price>
+        <prices>
+            <price currency="EUR">23000.00</price>
+            <price currency="GBP">20000.00</price>
+            <price currency="JPY">2800000.00</price>
+        </prices>
+      
+    </car>
+    <car>
+   
+        <type>Sedan</type>
+        <model>Civic</model>
+        <price currency="USD">22000.00</price>
+        <prices>
+            <price currency="EUR">20000.00</price>
+            <price currency="GBP">18000.00</price>
+            <price currency="JPY">2500000.00</price>
+        </prices>
+        
+    </car>
+    <car>
+        
+        <type>Truck</type>
+        <model>F-150</model>
+        <price currency="USD">35000.00</price>
+        <prices>
+            <price currency="EUR">32000.00</price>
+            <price currency="GBP">28000.00</price>
+            <price currency="JPY">3900000.00</price>
+        </prices>
+       
+    </car>
+    <car>
+       
+        <type>SUV</type>
+        <model>Model X</model>
+        <price currency="USD">80000.00</price>
+        <prices>
+            <price currency="EUR">75000.00</price>
+            <price currency="GBP">65000.00</price>
+            <price currency="JPY">8800000.00</price>
+        </prices>
+     
+    </car>
+    <car>
+       
+        <type>Sedan</type>
+        <model>330i</model>
+        <price currency="USD">45000.00</price>
+        <prices>
+            <price currency="EUR">42000.00</price>
+            <price currency="GBP">37000.00</price>
+            <price currency="JPY">5000000.00</price>
+        </prices>
+       
+    </car>
+    <car>
+       
+        <type>SUV</type>
+        <model>Q5</model>
+        <price currency="USD">48000.00</price>
+        <prices>
+            <price currency="EUR">45000.00</price>
+            <price currency="GBP">40000.00</price>
+            <price currency="JPY">5300000.00</price>
+        </prices>
+        
+    </car>
+    <car>
+       
+        <type>Truck</type>
+        <model>Silverado</model>
+        <price currency="USD">40000.00</price>
+        <prices>
+            <price currency="EUR">37000.00</price>
+            <price currency="GBP">33000.00</price>
+            <price currency="JPY">4400000.00</price>
+        </prices>
+       
+    </car>
+    <car>
+        
+        <type>Sedan</type>
+        <model>C-Class</model>
+        <price currency="USD">55000.00</price>
+        <prices>
+            <price currency="EUR">52000.00</price>
+            <price currency="GBP">46000.00</price>
+            <price currency="JPY">6100000.00</price>
+        </prices>
+       
+    </car>
+    <car>
+       
+        <type>SUV</type>
+        <model>Rogue</model>
+        <price currency="USD">30000.00</price>
+        <prices>
+            <price currency="EUR">28000.00</price>
+            <price currency="GBP">25000.00</price>
+            <price currency="JPY">3300000.00</price>
+        </prices>
+       
+    </car>
+    <car>
+        
+        <type>Sedan</type>
+        <model>Elantra</model>
+        <price currency="USD">23000.00</price>
+        <prices>
+            <price currency="EUR">21000.00</price>
+            <price currency="GBP">19000.00</price>
+            <price currency="JPY">2600000.00</price>
+        </prices>
+        
+    </car>
+</cars>
