@@ -16,69 +16,57 @@ import com.yabets.carprocessor.sorter.ReleaseYearSorter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
-    public static void printHelp() {
+    private static String defaultOutputFormat = "table"; // Default to table output
 
-        System.out.println("""
-            Commands:
-              filter brand-price <brand|null> <min-price> <max-price> <currency> - Filter by brand and price, outputs table
-              filter brand-date <brand|null> <start-date> <end-date> - Filter by brand and release date (MM/dd/yyyy), outputs table
-              sort year - Sort by release year (latest to oldest), outputs table
-              sort price <currency> - Sort by price (highest to lowest), outputs table
-              sort currency-type - Sort SUVs (EUR), Sedans (JPY), Trucks (USD), outputs table
-              output <table|xml|json> - Set output format (default: table)
-              help - Show this help message
-              exit - Exit the application
-            Note: Car list resets to initial state after each filter or sort command.
-            """);
-    }
+    public static List<Car> processCommand(String command, List<Car> cars, List<Car> initialCars) {
 
-    public static void outputCars(String format, List<Car> cars) {
+        String[] parts = command.split("\\s+");
 
-        OutputFormatter formatter = switch (format.toLowerCase()) {
-            case "table" -> new TableFormatter();
-            case "xml" -> new XmlFormatter();
-            case "json" -> new JsonFormatter();
-            default -> throw new IllegalArgumentException("Invalid output format: " + format);
-        };
+        if (parts.length == 0) {
 
-        System.out.println(formatter.format(cars));
-    }
-
-    public static void sortCars(String[] parts, List<Car> cars) {
-
-        CarSorter sorter;
-
-        if (parts[1].equalsIgnoreCase("year")) {
-
-            sorter = new ReleaseYearSorter();
-
-        } else if (parts[1].equalsIgnoreCase("price")) {
-
-            if (parts.length != 3) {
-
-                throw new IllegalArgumentException("Usage: sort price <currency>");
-            }
-
-            sorter = new PriceSorter(parts[2].toUpperCase());
-
-        } else if (parts[1].equalsIgnoreCase("currency-type")) {
-
-            sorter = new CurrencyTypeSorter();
-
-        } else {
-
-            throw new IllegalArgumentException("Invalid sort type: " + parts[1]);
+            printHelp();
+            return new ArrayList<>();
         }
 
-        cars = sorter.sort(cars);
+        switch (parts[0].toLowerCase()) {
+            case "filter":
+                if (parts.length < 4) {
+                    throw new IllegalArgumentException("Usage: filter <brand-price|brand-date> <params>");
+                }
+                cars = filterCars(parts, cars);
+                outputCars(defaultOutputFormat, cars);
+                cars = new ArrayList<>(initialCars); // Reset list after output
+                break;
+            case "sort":
+                if (parts.length < 2) {
+                    throw new IllegalArgumentException("Usage: sort <year|price|currency-type> [currency]");
+                }
+                cars = sortCars(parts, cars);
+                outputCars(defaultOutputFormat, cars);
+                cars = new ArrayList<>(initialCars); // Reset list after output
+                break;
+            case "output":
+                if (parts.length != 2) {
+                    throw new IllegalArgumentException("Usage: output <table|xml|json>");
+                }
+                defaultOutputFormat = parts[1].toLowerCase();
+                outputCars(defaultOutputFormat, cars);
+                break;
+            case "help":
+                printHelp();
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown command: " + parts[0]);
+        }
 
-        System.out.println("Sorted " + cars.size() + " cars.");
+        return cars;
     }
 
     public static String getBrandFromModel(String model) {
@@ -98,7 +86,7 @@ public class Utils {
         };
     }
 
-    public static void filterCars(String[] parts, List<Car> cars) {
+    private static List<Car> filterCars(String[] parts, List<Car> cars) {
 
         CarFilter filter;
 
@@ -143,8 +131,63 @@ public class Utils {
             throw new IllegalArgumentException("Invalid filter type: " + parts[1]);
         }
 
-        cars = filter.filter(cars);
+        return filter.filter(cars);
+    }
 
-        System.out.println("Filtered to " + cars.size() + " cars.");
+    private static List<Car> sortCars(String[] parts, List<Car> cars) {
+
+        CarSorter sorter;
+
+        if (parts[1].equalsIgnoreCase("year")) {
+
+            sorter = new ReleaseYearSorter();
+
+        } else if (parts[1].equalsIgnoreCase("price")) {
+
+            if (parts.length != 3) {
+
+                throw new IllegalArgumentException("Usage: sort price <currency>");
+            }
+
+            sorter = new PriceSorter(parts[2].toUpperCase());
+
+        } else if (parts[1].equalsIgnoreCase("currency-type")) {
+
+            sorter = new CurrencyTypeSorter();
+
+        } else {
+
+            throw new IllegalArgumentException("Invalid sort type: " + parts[1]);
+        }
+
+        return sorter.sort(cars);
+    }
+
+    private static void outputCars(String format, List<Car> cars) {
+
+        OutputFormatter formatter = switch (format.toLowerCase()) {
+            case "table" -> new TableFormatter();
+            case "xml" -> new XmlFormatter();
+            case "json" -> new JsonFormatter();
+            default -> throw new IllegalArgumentException("Invalid output format: " + format);
+        };
+
+        System.out.println(formatter.format(cars));
+    }
+
+    private static void printHelp() {
+
+        System.out.println("""
+            Commands:
+              filter brand-price <brand|null> <min-price> <max-price> <currency> - Filter by brand and price, outputs table
+              filter brand-date <brand|null> <start-date> <end-date> - Filter by brand and release date (MM/dd/yyyy), outputs table
+              sort year - Sort by release year (latest to oldest), outputs table
+              sort price <currency> - Sort by price (highest to lowest), outputs table
+              sort currency-type - Sort SUVs (EUR), Sedans (JPY), Trucks (USD), outputs table
+              output <table|xml|json> - Set output format (default: table)
+              help - Show this help message
+              exit - Exit the application
+            Note: Car list resets to initial state after each filter or sort command.
+            """);
     }
 }
