@@ -76,8 +76,6 @@ public class CarProcessorCli {
 
     private void loadFilesFromResources() throws Exception {
 
-        long startTime = System.currentTimeMillis();
-
         // Load cars.xml from classpath
         InputStream xmlStream = getClass().getClassLoader().getResourceAsStream("cars.xml");
 
@@ -111,16 +109,6 @@ public class CarProcessorCli {
                 }).collect(Collectors.toList());
 
         initialCars = new ArrayList<>(cars); // Store copy of initial list
-
-        // Log loaded cars for debugging
-        for (Car car : cars) {
-
-            LOGGER.fine("Loaded car: model=" + car.model() + ", brand=" + car.brand() + ", prices=" + car.getPriceMap() + ", releaseDate=" + car.releaseDate());
-        }
-
-        long duration = System.currentTimeMillis() - startTime;
-
-        LOGGER.fine("Loaded " + cars.size() + " cars in " + duration + " ms");
     }
 
     public void run() {
